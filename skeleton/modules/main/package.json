@@ -1,0 +1,21 @@
+{
+  "name": "BQ Buscas module",
+  "version": "0.0.1",
+  "author": "Robson <contato@dezmin.com.br>",
+  "description": "BQ Buscas",
+  "main": "",
+  "repository": {},
+  "keywords": [
+    "modular", "bqbuscas"
+  ],
+  "reqModDependencies" : {
+    "backbone":"backbone",    
+    "twitter-bootstrap":"twitter-bootstrap",    
+    "bqbuscas":"bqbuscas"    
+  },
+  "reqFileDependencies" : {
+    "js"   :  "js/main.js"
+  },
+  "license": "Proprietary",
+  "engines": {}
+}

@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+        RewriteEngine On
+        Options +FollowSymLinks
+        RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+        RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+        RewriteCond %{REQUEST_FILENAME} !-f	
+        RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_URI} !^(.*)modules(.*)$	
+        RewriteRule ^(.*)$ index.html [L,QSA]	 
+</IfModule>

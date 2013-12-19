@@ -1,0 +1,16 @@
+{
+  "name": "Jquery module",
+  "version": "0.0.1",
+  "author": "Robson <contato@dezmin.com.br>",
+  "description": "Jquery",
+  "main": "",
+  "repository": {},
+  "keywords": [
+    "Jquery"
+  ],
+  "reqFileDependencies" : {
+    "js"   :  "js/jquery.js"
+  },
+  "license": "Proprietary",
+  "engines": {}
+}

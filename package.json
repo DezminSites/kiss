@@ -1,0 +1,19 @@
+{
+  "name": "kiss",
+  "version": "0.0.1",
+  "description": "Keep it simple, Stupid!",
+  "main": "index.js",
+  "bin": "./index.js",
+  "preferGlobal": true,
+  "authors": [
+    "Robson Loschi <contato@dezmin.com.br>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "ncp": "~0.4.2",
+    "bower": "~1.2.7",
+    "glob": "~3.2.7",
+    "commander": "~2.1.0",
+    "inquirer": "~0.3.5"
+  }
+}
