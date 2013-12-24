@@ -16,7 +16,7 @@ Object.size = function(obj) {
  * to avoid duplicated download
  */
 var required = {
-    'modules': [],
+    'modules': ['jquery'],
     'files': [],
     'stack': []
 }
@@ -26,15 +26,15 @@ var required = {
  */
 
 function require(name){
+    var prefix = location.pathname
     if (required.modules.indexOf(name) < 0){
-        $.getJSON('./modules/'+name+'/package.json', function(data){
+        $.getJSON(prefix + '/modules/'+name+'/package.json', function(data){
             //Deal with dependent modules
-            var modules = data.reqModDependencies;
-            window.modules = modules;
+            var modules = data.dependencies;
             if (Object.size(modules) > 0){
                 for (mod in modules){
                     if (required.modules.indexOf(mod) < 0){
-                        require(modules[mod]);
+                        require(mod);
                         //Stop actual require and add module to stack
                         required.stack.push(name);
                         return;
@@ -42,15 +42,20 @@ function require(name){
                 }
             }
             //Deal with dependent files
-            var data_urls = data.reqFileDependencies;
-            var len = Object.size(data_urls);
+            var data_urls = [],
+                deps = data.main;
+            if (typeof deps == 'string')
+                data_urls.push(deps)
+            else if (typeof deps == 'object')
+                data_urls = deps;
+            var len = data_urls.length;
             var i = 0;
             for (el in data_urls){
                 var url = data_urls[el];
                 if (required.files.indexOf(url) < 0){
                     //Get proper file
-                    $.get('./modules/'+name+'/'+data_urls[el])
-                    .success(function(data) {
+                    $.get(prefix + '/modules/'+name+'/'+data_urls[el])
+                    .done(function(data) {
                         url = this.url;
                         var ext = url.split('.').pop();
                         switch(ext){
@@ -82,7 +87,8 @@ function require(name){
                             }
                                 
                         }
-                    });
+                    }
+                ).fail(function(data){console.log(data)});
                 } else {
                     console.log('File '+url+' already loaded!');
                 }//endif
@@ -97,5 +103,5 @@ function require(name){
  * Actual bootstrap function
  */
 $(function(){
-    require('main');
+    require('main')
 });

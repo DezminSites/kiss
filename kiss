@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 //var argv = require('optimist').argv
+//var argv = require('commander')
 var argv = require('commander')
 var fs = require('fs')
 var bower = require('bower')
@@ -13,24 +14,31 @@ var path = require('path')
 var pkg = require('./package.json')
 
 argv
-  .version(pkg.version)
-  .option('-I, --init', 'Create a new project')
-  .option('-i, --install [module]', 'Install modules')
-  .option('-s, --save', 'Save module as a dependency')
-  .option('-d, --dirty', 'Keep the modules folder dirty')
-  .parse(process.argv)
+.version(pkg.version)
+.option('-I, --init', 'Create a new project')
+.option('-i, --install [module]', 'Install modules')
+.option('-s, --save', 'Save module as a dependency')
+.option('-d, --dirty', 'Keep the modules folder dirty')
+.parse(process.argv)
 
 
 if (argv.init) {
-    var ncp = require('ncp').ncp
+    glob(process.cwd() + '/*', function (er, files) {
+        if (files.length > 0 )
+            console.log('Ops... Directory project must be empty!')
+        else {
+            var ncp = require('ncp').ncp
 
-    ncp.limit = 16;
+            ncp.limit = 16;
 
-    ncp(__dirname+'/skeleton', '.', function (err) {
-        if (err) {
-            return console.error(err)
+            ncp(__dirname+'/skeleton', '.', function (err) {
+                if (err) {
+                    return console.error(err)
+                }
+                makeJson()
+            })
+            
         }
-        console.log('Your app is ready to Rock!')
     })
 }
 else if(argv.install) {
@@ -46,7 +54,66 @@ else if(argv.install) {
     })   
 }
 else {
-    console.log('Nothing to do! Need help??')
+    console.log('Nothing to do! Need help?? Try "kiss --help"')
+}
+
+function makeJson(){
+    var inquirer = require("inquirer")
+    var path = require("path")
+
+    var questions = [
+        {
+            type: "input",
+            name: "name",
+            message: "Name",
+            'default': function(){
+                return path.basename(process.cwd())
+            }
+        },
+        {
+            type: "input",
+            name: "version",
+            message: "Version",
+            'default': function(){
+                return '0.0.0'
+            }
+        },
+        {
+            'name': 'description',
+            'message': 'description',
+            'default': 'A wonderful app created with kiss!',
+            'type': 'input'
+        },
+        {
+            'name': 'keywords',
+            'message': 'keywords',
+            'default': '',
+            'type': 'input'
+        },
+        {
+            'name': 'authors',
+            'message': 'authors',
+            'default': '',
+            'type': 'input'
+        },
+        {
+            'name': 'license',
+            'message': 'license',
+            'default': 'MIT',
+            'type': 'input'
+        },
+        {
+            'name': 'homepage',
+            'message': 'homepage',
+            'default': '',
+            'type': 'input'
+        }
+    ]
+
+    inquirer.prompt( questions, function( answers ) {
+        fs.writeFileSync(process.cwd() + '/package.json', JSON.stringify(answers, null, "  "))
+        console.log('Your app is ready to Rock!')
+    })
 }
 
 function installModule(name,save,dirty){
@@ -129,7 +196,7 @@ function makeGlob(name,arr){
                     try{
                         //Removes only empty dirs
                         console.log(path.dirname(files[f]))
-                          fs.rmdirSync(path.dirname(files[f]))
+                        fs.rmdirSync(path.dirname(files[f]))
                     }catch(e){
                         //console.log(e)
                     }

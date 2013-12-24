@@ -1,6 +1,5 @@
 /* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Do something when main module is ready.
  */
 
 $("body").on("mainready",function(){
