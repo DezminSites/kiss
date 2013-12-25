@@ -2,7 +2,7 @@
   "name": "kiss",
   "version": "0.0.1",
   "description": "Keep it simple, Stupid!",
-  "bin": "./kiss",
+  "bin": "bin/kiss",
   "preferGlobal": true,
   "authors": [
     "Robson Loschi <contato@dezmin.com.br>"
@@ -17,6 +17,7 @@
     "request": "~2.30.0",
     "cheerio": "~0.12.4",
     "octokit": "~0.9.9",
-    "octonode": "~0.4.1"
+    "octonode": "~0.4.1",
+    "adm-zip": "~0.4.3"
   }
 }
