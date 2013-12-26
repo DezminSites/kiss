@@ -1,6 +1,6 @@
 {
   "name": "kiss",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Keep it simple, Stupid!",
   "bin": "bin/kiss",
   "preferGlobal": true,
