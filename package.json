@@ -1,6 +1,6 @@
 {
   "name": "kiss",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Keep it simple, Stupid!",
   "bin": {
     "kiss": "bin/kiss"
