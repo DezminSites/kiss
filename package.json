@@ -1,8 +1,10 @@
 {
   "name": "kiss",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Keep it simple, Stupid!",
-  "bin": "bin/kiss",
+  "bin" : { 
+      "kiss" : "bin/kiss" 
+  },
   "preferGlobal": true,
   "authors": [
     "Robson Loschi <contato@dezmin.com.br>"
