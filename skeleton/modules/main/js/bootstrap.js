@@ -12,22 +12,12 @@ Object.size = function(obj) {
 
 
 /* 
- * Global object to track loaded modules and files
- * to avoid duplicated download
- */
-var required = {
-    'modules': ['jquery'],
-    'files': [],
-    'stack': []
-}
-
-/* 
  * Modules loader
  */
 
-function require(name){
+var require = function(name){
     var prefix = location.pathname
-    if (required.modules.indexOf(name) < 0){
+    if (require.required.modules.indexOf(name) < 0){
         $.getJSON(prefix + '/modules/'+name+'/package.json', function(data){
             //Deal with dependent modules
             var modules = data.dependencies;
@@ -36,7 +26,7 @@ function require(name){
                     if (required.modules.indexOf(mod) < 0){
                         require(mod);
                         //Stop actual require and add module to stack
-                        required.stack.push(name);
+                        require.required.stack.push(name);
                         return;
                     }
                 }
@@ -52,7 +42,7 @@ function require(name){
             var i = 0;
             for (el in data_urls){
                 var url = data_urls[el];
-                if (required.files.indexOf(url) < 0){
+                if (require.required.files.indexOf(url) < 0){
                     //Get proper file
                     $.get(prefix + '/modules/'+name+'/'+data_urls[el])
                     .done(function(data) {
@@ -73,17 +63,17 @@ function require(name){
                                 }).appendTo('head');
                                 break;
                         }
-                        required.files.push(url);
+                        require.required.files.push(url);
                         //Check if all files are included
                         i += 1;
                         if (i == len) {
                             $("body").trigger(name+"ready");
                             console.log(name+" ready !");
-                            required.modules.push(name);
+                            require.required.modules.push(name);
                             
                             //Since module is ready check if there were modules dependent on it
-                            if (required.stack.length >0){
-                                require(required.stack.pop());
+                            if (require.required.stack.length >0){
+                                require(require.required.stack.pop());
                             }
                                 
                         }
@@ -98,6 +88,17 @@ function require(name){
         console.log('Module '+name+' already loaded!');
     }
 }
+
+/* 
+ * Object to track loaded modules and files
+ * to avoid duplicated download
+ */
+require.required = {
+    'modules': ['jquery'],
+    'files': [],
+    'stack': []
+}
+
 
 /* 
  * Actual bootstrap function
