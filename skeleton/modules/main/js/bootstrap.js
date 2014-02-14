@@ -23,7 +23,7 @@ var require = function(name){
             var modules = data.dependencies;
             if (Object.size(modules) > 0){
                 for (mod in modules){
-                    if (required.modules.indexOf(mod) < 0){
+                    if (require.required.modules.indexOf(mod) < 0){
                         require(mod);
                         //Stop actual require and add module to stack
                         require.required.stack.push(name);
